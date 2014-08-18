@@ -61,8 +61,8 @@ namespace Leona
 
             // Combo menu
             Config.AddSubMenu(new Menu("Combo", "Combo"));
-            //Config.SubMenu("Combo").AddItem(new MenuItem("WhenAA", "When to use Q").SetValue(new StringList(new[] { "Before AA", "On AA", "After AA"}, 0)));
-            Config.SubMenu("Combo").AddItem(new MenuItem("WhenAA", "When Q").SetValue(new StringList(new[] { "Before AA", "On AA", "After AA"}, 0)));
+            //Config.SubMenu("Combo").AddItem(new MenuItem("WhenAA", "When Q").SetValue(new StringList(new[] { "Before AA", "On AA", "After AA"}, 0)));
+            Config.SubMenu("Combo").AddItem(new MenuItem("WhenAA", "When Q").SetValue(new StringList(new[] { "Before AA", "On AA", "After AA" }, 0)));
             Config.SubMenu("Combo").AddItem(new MenuItem("UseQ", "Use Q").SetValue(true));
             Config.SubMenu("Combo").AddItem(new MenuItem("UseW", "Use W").SetValue(true));
             Config.SubMenu("Combo").AddItem(new MenuItem("UseE", "Use E").SetValue(true));
@@ -76,12 +76,15 @@ namespace Leona
             Config.SubMenu("Harass").AddItem(new MenuItem("UseEHarass", "Use E").SetValue(true));
             Config.SubMenu("Harass").AddItem(new MenuItem("HarassActive", "Harass!").SetValue(new KeyBind("C".ToCharArray()[0], KeyBindType.Press)));
 
-            
+            Config.AddSubMenu(new Menu("Ultimate", "Ultimate"));
+            Config.SubMenu("Ultimate").AddItem(new MenuItem("AutoR", "Manual R").SetValue(new KeyBind("T".ToCharArray()[0], KeyBindType.Press)));
+
+
 
             // Misc menu
-          //  Config.AddSubMenu(new Menu("Misc", "Misc"));
+            //  Config.AddSubMenu(new Menu("Misc", "Misc"));
             //Config.SubMenu("Misc").AddItem(new MenuItem("AutoR", "Auto Ultimate (Not fixed)").SetValue(new Slider(3, 5, 1)));
-          //  Config.SubMenu("Misc").AddItem(new MenuItem("WhenAA", "When to use Q").SetValue(new StringList(new[] { "Before AA", "On AA", "After AA" }, 1)));
+            //  Config.SubMenu("Misc").AddItem(new MenuItem("WhenAA", "When to use Q").SetValue(new StringList(new[] { "Before AA", "On AA", "After AA" }, 1)));
 
 
             // Drawings menu
@@ -174,7 +177,18 @@ namespace Leona
                 if (Config.Item("HarassActive").GetValue<KeyBind>().Active)
                     Harass();
             }
+            if (Config.Item("AutoR").GetValue<KeyBind>().Active)
+            {
+                AimR();
+            }
+
             //Need to implement the Auto Ultimate 
+        }
+
+        private static void AimR()
+        {
+            var rtarget = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Magical);
+            R.CastIfHitchanceEquals(rtarget, Prediction.HitChance.HighHitchance, true);
         }
 
         private static void Harass()
@@ -215,9 +229,9 @@ namespace Leona
                     {
                         W.Cast();
                     }
-                    if (Config.Item("UseR").GetValue<bool>() && R.IsReady() && (Player.Distance(target) <= R.Range) && (target.IsRooted))
+                    if (Config.Item("UseR").GetValue<bool>() && R.IsReady() && (Player.Distance(target) <= R.Range) && (target.HasBuff("leonazenithbladeroot")))
                     {
-                        R.CastOnUnit(target, false);
+                        R.CastOnUnit(target, true);
                     }
                 }
                 Orbwalker.SetAttacks(true);
