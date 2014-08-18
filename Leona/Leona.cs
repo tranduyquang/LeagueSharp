@@ -188,7 +188,10 @@ namespace Leona
         private static void AimR()
         {
             var rtarget = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Magical);
-            R.CastIfHitchanceEquals(rtarget, Prediction.HitChance.HighHitchance, true);
+            if (R.IsReady() && (rtarget != null))
+            {
+                R.CastIfHitchanceEquals(rtarget, Prediction.HitChance.HighHitchance, true);
+            }
         }
 
         private static void Harass()
