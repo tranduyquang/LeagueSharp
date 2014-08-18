@@ -1,4 +1,4 @@
-﻿using LeagueSharp;
+using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 using System;
