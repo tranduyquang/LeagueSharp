@@ -128,7 +128,7 @@ namespace SFTemplate
                 if (Q.IsReady() && ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) <= Q.Range && DamageLib.getDmg(hero, DamageLib.SpellType.Q) >= hero.Health) Q.Cast();
             }
 
-            foreach (Obj_AI_Her hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero != null && hero.IsValid && hero.IsVisible && !hero.IsDead))
+            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero != null && hero.IsValid && hero.IsVisible && !hero.IsDead))
             {
                 if (W.IsReady() && ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) <= W.Range && DamageLib.getDmg(hero, DamageLib.SpellType.W) >= hero.Health) W.CastOnUnit(hero, Config.Item("NFE").GetValue<bool>());
             }
