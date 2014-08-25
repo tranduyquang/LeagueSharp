@@ -101,6 +101,7 @@ namespace SFTemplate
             if (Config.Item("ComboActive").GetValue<KeyBind>().Active)
             {
                 Combo();
+                KillSteal();
             }
             if (Config.Item("ks").GetValue<bool>())
             {
@@ -122,14 +123,14 @@ namespace SFTemplate
 
         public static void KillSteal()
         {
-            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(Q.Range)))
+            foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero != null && hero.IsValid && hero.IsVisible && !hero.IsDead))
             {
-                if (Q.IsReady() && hero.Distance(ObjectManager.Player) <= Q.Range && DamageLib.getDmg(hero, DamageLib.SpellType.Q) >= hero.Health) Q.Cast();
+                if (Q.IsReady() && ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) <= Q.Range && DamageLib.getDmg(hero, DamageLib.SpellType.Q) >= hero.Health) Q.Cast();
             }
 
-            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(W.Range)))
+            foreach (Obj_AI_Her hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero != null && hero.IsValid && hero.IsVisible && !hero.IsDead))
             {
-                if (W.IsReady() && hero.Distance(ObjectManager.Player) <= W.Range && DamageLib.getDmg(hero, DamageLib.SpellType.W) >= hero.Health) W.CastOnUnit(hero, Config.Item("NFE").GetValue<bool>());
+                if (W.IsReady() && ObjectManager.Player.ServerPosition.Distance(hero.ServerPosition) <= W.Range && DamageLib.getDmg(hero, DamageLib.SpellType.W) >= hero.Health) W.CastOnUnit(hero, Config.Item("NFE").GetValue<bool>());
             }
         }
 
